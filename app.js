@@ -15,6 +15,11 @@ import cors from "cors";
 import xss from "xss-clean";
 import rateLimiter from "express-rate-limit";
 
+//Swagger
+import swaggerUI from "swagger-ui-express";
+import YAML from "yamljs";
+const swaggerDocument = YAML.load("./swagger.yaml");
+
 dotenv.config();
 const app = express();
 
@@ -32,15 +37,17 @@ app.use(xss());
 
 // routes
 app.get("/", (req, res) => {
-  res.send("JOBS API");
+  res.send("<h1>jobs API</h1><a href='/api-docs'>Documentation</a>");
 });
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", authenticateUser, jobRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 const start = async () => {
   try {
