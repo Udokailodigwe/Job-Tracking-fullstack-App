@@ -1,38 +1,33 @@
 openapi: 3.0.0
 info:
-  title: JOB-API
+  title: Jobs API
   contact: {}
-  version: "1.0"
+  version: '1.0'
 servers:
-  - url: https://jobs-api-mbpy.onrender.com/api/v1
+  - url: https://jobs-api-06.herokuapp.com/api/v1
     variables: {}
 paths:
   /auth/register:
     post:
       tags:
         - Auth
-      summary: Register user
-      operationId: Registeruser
+      summary: Register User
+      operationId: RegisterUser
       parameters: []
       requestBody:
-        description: ""
+        description: ''
         content:
           application/json:
             schema:
-              allOf:
-                - $ref: "#/components/schemas/RegisteruserRequest"
-                - example:
-                    name: Femi
-                    email: Femi@gmail.com
-                    password: secret
+              $ref: '#/components/schemas/RegisterUserRequest'
             example:
-              name: Femi
-              email: Femi@gmail.com
+              name: bob
+              email: bob@gmail.com
               password: secret
         required: true
       responses:
-        "200":
-          description: ""
+        '200':
+          description: ''
           headers: {}
       deprecated: false
       security: []
@@ -40,26 +35,22 @@ paths:
     post:
       tags:
         - Auth
-      summary: Login user
-      operationId: Loginuser
+      summary: Login User
+      operationId: LoginUser
       parameters: []
       requestBody:
-        description: ""
+        description: ''
         content:
           application/json:
             schema:
-              allOf:
-                - $ref: "#/components/schemas/LoginuserRequest"
-                - example:
-                    email: peter@gmail.com
-                    password: secret
+              $ref: '#/components/schemas/LoginUserRequest'
             example:
-              email: peter@gmail.com
+              email: susan@gmail.com
               password: secret
         required: true
       responses:
-        "200":
-          description: ""
+        '200':
+          description: ''
           headers: {}
       deprecated: false
       security: []
@@ -71,26 +62,20 @@ paths:
       operationId: CreateJob
       parameters: []
       requestBody:
-        description: ""
+        description: ''
         content:
           application/json:
             schema:
-              allOf:
-                - $ref: "#/components/schemas/CreatejobRequest"
-                - example:
-                    company: Google
-                    position: senior developer
+              $ref: '#/components/schemas/CreateJobRequest'
             example:
-              company: Google
-              position: senior developer
+              company: google
+              position: front-end developer
         required: true
       responses:
-        "200":
-          description: ""
+        '200':
+          description: ''
           headers: {}
       deprecated: false
-      security:
-        - bearer: []
     get:
       tags:
         - Jobs
@@ -98,12 +83,10 @@ paths:
       operationId: GetAllJobs
       parameters: []
       responses:
-        "200":
-          description: ""
+        '200':
+          description: ''
           headers: {}
       deprecated: false
-      security:
-        - bearer: []
   /jobs/{id}:
     parameters:
       - in: path
@@ -115,16 +98,14 @@ paths:
     get:
       tags:
         - Jobs
-      summary: Get job
-      operationId: Getjob
+      summary: Get Single Job
+      operationId: GetSingleJob
       parameters: []
       responses:
-        "200":
-          description: ""
+        '200':
+          description: ''
           headers: {}
       deprecated: false
-      security:
-        - bearer: []
 
     patch:
       tags:
@@ -133,27 +114,20 @@ paths:
       operationId: UpdateJob
       parameters: []
       requestBody:
-        description: ""
+        description: ''
         content:
           application/json:
             schema:
-              allOf:
-                - $ref: "#/components/schemas/UpdateJobRequest"
-                - example:
-                    company: Digia
-                    position: Entry level
+              $ref: '#/components/schemas/UpdateJobRequest'
             example:
-              company: Digia
-              position: Entry level
+              company: random
+              position: intern
         required: true
       responses:
-        "200":
-          description: ""
+        '200':
+          description: ''
           headers: {}
       deprecated: false
-      security:
-        - bearer: []
-
     delete:
       tags:
         - Jobs
@@ -161,16 +135,14 @@ paths:
       operationId: DeleteJob
       parameters: []
       responses:
-        "200":
-          description: ""
+        '200':
+          description: ''
           headers: {}
       deprecated: false
-      security:
-        - bearer: []
 components:
   schemas:
-    RegisteruserRequest:
-      title: RegisteruserRequest
+    RegisterUserRequest:
+      title: RegisterUserRequest
       required:
         - name
         - email
@@ -184,11 +156,11 @@ components:
         password:
           type: string
       example:
-        name: Femi
-        email: Femi@gmail.com
+        name: bob
+        email: bob@gmail.com
         password: secret
-    LoginuserRequest:
-      title: LoginuserRequest
+    LoginUserRequest:
+      title: LoginUserRequest
       required:
         - email
         - password
@@ -199,10 +171,10 @@ components:
         password:
           type: string
       example:
-        email: peter@gmail.com
+        email: susan@gmail.com
         password: secret
-    CreatejobRequest:
-      title: CreatejobRequest
+    CreateJobRequest:
+      title: CreateJobRequest
       required:
         - company
         - position
@@ -213,8 +185,8 @@ components:
         position:
           type: string
       example:
-        company: Google
-        position: senior developer
+        company: google
+        position: front-end developer
     UpdateJobRequest:
       title: UpdateJobRequest
       required:
@@ -227,15 +199,16 @@ components:
         position:
           type: string
       example:
-        company: Digia
-        position: Entry level
+        company: random
+        position: intern
   securitySchemes:
-    bearer:
+    httpBearer:
       type: http
       scheme: bearer
-security: []
+security:
+  - httpBearer: []
 tags:
   - name: Auth
-    description: ""
+    description: ''
   - name: Jobs
-    description: ""
+    description: ''

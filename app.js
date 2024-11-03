@@ -9,45 +9,37 @@ import authRouter from "./routes/auth.js";
 import jobRouter from "./routes/jobs.js";
 import connectDB from "./db/connect.js";
 import authenticateUser from "./middleware/authentication.js";
+import path from "path";
+import { fileURLToPath } from "url";
+
 //security packages
 import helmet from "helmet";
-import cors from "cors";
 import xss from "xss-clean";
-import rateLimiter from "express-rate-limit";
-
-//Swagger
-import swaggerUI from "swagger-ui-express";
-import YAML from "yamljs";
-const swaggerDocument = YAML.load("./swagger.yaml");
 
 dotenv.config();
 const app = express();
 
 app.set("trust proxy", 1);
-app.use(
-  rateLimiter({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    limit: 100, // Limit each IP to 100 requests per `window`
-  })
-);
+// Define __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.resolve(__dirname, "./client/build")));
 app.use(express.json());
 app.use(helmet());
-app.use(cors());
 app.use(xss());
 
 // routes
-app.get("/", (req, res) => {
-  res.send("<h1>jobs API</h1><a href='/api-docs'>Documentation</a>");
-});
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
-
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", authenticateUser, jobRouter);
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+});
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 const start = async () => {
   try {

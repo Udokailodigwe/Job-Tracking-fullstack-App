@@ -24,9 +24,22 @@ const UserSchema = new mongoose.Schema({
     minlength: 6,
     // maxlength: 12,
   },
+  lastName: {
+    type: String,
+    trim: true,
+    maxlength: 20,
+    default: "lastName",
+  },
+  location: {
+    type: String,
+    trim: true,
+    maxlength: 20,
+    default: "my city",
+  },
 });
 
 UserSchema.pre("save", async function () {
+  // if (!this.isModified("password")) return; //optional when applying findOne() & save() for update controller
   const salt = await bycrypt.genSalt(10);
   this.password = await bycrypt.hash(this.password, salt);
 });
