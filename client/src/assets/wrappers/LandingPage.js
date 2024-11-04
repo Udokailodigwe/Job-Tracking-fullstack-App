@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 const Wrapper = styled.main`
   nav {
@@ -26,6 +26,7 @@ const Wrapper = styled.main`
   }
   .main-img {
     display: none;
+    color: aqua;
   }
   @media (min-width: 992px) {
     .page {
@@ -34,7 +35,8 @@ const Wrapper = styled.main`
     }
     .main-img {
       display: block;
+      color: aqua;
     }
   }
-`
-export default Wrapper
+`;
+export default Wrapper;
